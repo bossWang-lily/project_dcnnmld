@@ -6,7 +6,7 @@ Offical repo for the paper titled "A MIMO Detector with Deep Learning in the Pre
 2. `pip install matplotlib`
 3. `pip install mpmath`
 
-## How to run on windows?
+## How to run?
 keep calm and run 'test.py'
 
 ## License
