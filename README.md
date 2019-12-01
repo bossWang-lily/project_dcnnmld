@@ -7,7 +7,7 @@ Offical repo for the paper titled "A MIMO Detector with Deep Learning in the Pre
 3. `pip install mpmath`
 
 ## How to run?
-keep calm and run 'test.py'
+keep calm and run `python test.py`
 
 ## License
 Anti 996 License Version 1.0
