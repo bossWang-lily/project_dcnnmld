@@ -75,7 +75,7 @@ class DCNNMLD:
 
             last_out = layer_output[self.total_layer - 1]
 
-            # 换回来为常规的虚实分割形式，因为待会要和H相乘
+            # 换回来为常规的虚实分割形式，因为待会要和y做计算
             w_out = tf.reshape(last_out, [PACKETS_PER_BATCH, TRANSMIT_TIMES_PER_PACKET, NUM_ANT, 2])
             w_out = tf.transpose(w_out, perm=[0, 1, 3, 2])
             w_out = tf.reshape(w_out, [TRANSMIT_TIMES_PER_BATCH, 2 * NUM_ANT, 1])
