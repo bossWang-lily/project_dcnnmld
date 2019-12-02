@@ -57,7 +57,8 @@ def random_h_batch():
 
     prev_h = None
     for _ in range(PACKETS_PER_BATCH):
-        for t in range(TRANSMIT_TIMES_PER_PACKET):    
+        for t in range(TRANSMIT_TIMES_PER_PACKET):
+            # 由于tensorflow不支持复数直接运算，所以我们需要分割为实部和虚部的形式
             real = np.random.randn(NUM_ANT, NUM_ANT)
             imag = np.random.randn(NUM_ANT, NUM_ANT)
             h = np.row_stack(

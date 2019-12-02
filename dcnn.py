@@ -39,6 +39,9 @@ class DCNNMLD:
             for layer_id in range(self.total_layer):
                 with tf.variable_scope("conv_layer_{}".format(layer_id)):
                     if layer_id == 0:
+                        # 将其实部和虚部排列为RRRR,IIII的形式（类似于将其分为两个通道，一个实，一个虚）,
+                        # 这里需要使用Fortan-like形式的reshape来转换，由于tensorflow不支持直接Fortan-like的reshape，
+                        # 我们还得绕点弯路用C-like的reshape来实现
                         w_in = tf.reshape(self.hat_w, [PACKETS_PER_BATCH, TRANSMIT_TIMES_PER_PACKET, 2, NUM_ANT])
                         w_in = tf.transpose(w_in, perm=[0, 1, 3, 2])
                         w_in = tf.reshape(w_in, [PACKETS_PER_BATCH, PACKET_SIZE, 1, 1])
@@ -72,6 +75,7 @@ class DCNNMLD:
 
             last_out = layer_output[self.total_layer - 1]
 
+            # 换回来为常规的虚实分割形式，因为待会要和H相乘
             w_out = tf.reshape(last_out, [PACKETS_PER_BATCH, TRANSMIT_TIMES_PER_PACKET, NUM_ANT, 2])
             w_out = tf.transpose(w_out, perm=[0, 1, 3, 2])
             w_out = tf.reshape(w_out, [TRANSMIT_TIMES_PER_BATCH, 2 * NUM_ANT, 1])
@@ -173,6 +177,7 @@ class DCNNMLD:
         return ber_cnn
 
     def detect_bits_batch(self, y, h, hat_w_in, k=1):
+        """检测一个batch中传输的比特"""
         hat_w = hat_w_in
         for _ in range(k):
             tilde_w = self.sess.run(self.w_cnn,feed_dict={self.hat_w: hat_w})
