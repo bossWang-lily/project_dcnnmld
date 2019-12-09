@@ -39,9 +39,8 @@ class DCNNMLD:
             for layer_id in range(self.total_layer):
                 with tf.variable_scope("conv_layer_{}".format(layer_id)):
                     if layer_id == 0:
-                        # 将其实部和虚部排列为RRRR,IIII的形式（类似于将其分为两个通道，一个实，一个虚）,
-                        # 这里需要使用Fortan-like形式的reshape来转换，由于tensorflow不支持直接Fortan-like的reshape，
-                        # 我们还得绕点弯路用C-like的reshape来实现
+                        # 将其实部和虚部排列为两个通道进行卷积, 这里需要使用Fortan-like形式的reshape来转换，
+                        # 由于tensorflow不支持直接Fortan-like的reshape，我们还得绕点弯路用C-like的reshape来实现
                         w_in = tf.reshape(self.hat_w, [PACKETS_PER_BATCH, TRANSMIT_TIMES_PER_PACKET, 2, NUM_ANT])
                         w_in = tf.transpose(w_in, perm=[0, 1, 3, 2])
                         w_in = tf.reshape(w_in, [PACKETS_PER_BATCH, PACKET_SIZE, 1, 1])

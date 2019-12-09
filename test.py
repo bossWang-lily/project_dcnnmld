@@ -136,5 +136,5 @@ def benchmark(k):
 
 
 if __name__ == "__main__":
-    generate_test_sets()  # 生成测试数据,如果已经有了，可以将其注释掉
-    benchmark(k=1)  # 可以更改k值以获得不同迭代次数的仿真结果
+    generate_test_sets()
+    benchmark(k=1)
